@@ -19,3 +19,17 @@ function WriteCmdScript {
     
     $string | Add-Content -LiteralPath "$CMD_SCRIPT_FILE" -Encoding UTF8
 }
+# Run this script
+# The $Wait switch enable the Start-Process -Wait behavior
+function RunCmdScript {
+    param (
+        [switch] $Wait
+    )
+    
+    if ($Wait){
+        Start-Process -FilePath "$CMD_SCRIPT_FILE" -Wait
+    }
+    else {
+        Start-Process -FilePath "$CMD_SCRIPT_FILE"
+    }
+}
