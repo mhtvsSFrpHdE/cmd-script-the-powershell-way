@@ -1,4 +1,9 @@
 # cmd-script-the-powershell-way
+**Contact**  
+Send issue or contrct to ```GitUserYbRoH5dUR1Bf|outlook|com```,  
+replace the pipe ```|``` to ```@``` in email address.  
+This is for anti spam robot scan.  
+
 **What is this**  
 In some rare ancient program case that will not run in powershell environment,  
 but use iex have problems with argument pass and encoding.  
