@@ -13,7 +13,19 @@ CreateCmdScript:
     a preset script save path variable is required, see script for detail.
 WriteCmdScript:
     Accept string as argument, put the string as a new line to this file.
+RunCmdScript:
+    A method to run a completed script.
+    There is a "-Wait" switch to enable powershell Start-Process -Wait.
 ```
 The often requirement is write a "chcp 65001" to make the script to work.  
 Windows XP doesn't have a real UTF-8 shell so take care.  
 Edit the script to change save format.
+
+**TODO**  
+```
+Add a ```-UTF8BOM``` switch to CreateCmdScript and require explicit argument,
+    or the library will throw exception.
+    This design to force you to confirm if you want a UTF-8 or a ANSI script.
+    The BOM is a legacy design that Windows notepad default UTF-8 format have a BOM.
+    DO NOT use any UTF-8 related code while under ANSI script.
+```
