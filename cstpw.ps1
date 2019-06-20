@@ -46,7 +46,7 @@ function Cstpw_Do_AddCommand {
         $CommandString
     )
     
-    $CommandString | Add-Content -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding = $cstpw_scriptEncoding
+    $CommandString | Add-Content -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding
 }
 
 # Grab system information
@@ -106,11 +106,16 @@ function Cstpw_Do_GrapScriptInfo {
 
 # Double grab with check
 function Cstpw_Do_GrabAllInfo {
+    param (
+        $Bash = $false,
+        $Cmd = $false
+    )
+
     if(!$cstpw_haveSysInfo){
         Cstpw_Do_GrabSystemInfo
     }
     if(!$cstpw_haveScriptInfo){
-        Cstpw_Do_GrapScriptInfo
+        Cstpw_Do_GrapScriptInfo -Bash $Bash -Cmd $Cmd
     }
 
     if($cstpw_haveSysInfo -and $cstpw_haveScriptInfo){
@@ -137,7 +142,7 @@ function Cstpw_CreateScript {
     $Script:cstpw_scriptEncoding = $Encoding
 
     # Do I have sys and script info?
-    Cstpw_Do_GrabAllInfo
+    Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd
 
     if (!$cstpw_ubDetected){
         # Fill script template by format
