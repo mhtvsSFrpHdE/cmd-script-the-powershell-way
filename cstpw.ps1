@@ -168,7 +168,16 @@ function Cstpw_WriteScript {
         $CommandString
     )
     
+    if (!$cstpw_ubDetected){
+        Cstpw_Do_AddCommand -CommandString $CommandString
+    }
+    else{
+        Write-Error $errMsg_UndocumentBehavior
+
+        return
+    }
 }
+
 # Run this script
 # The $Wait switch enable the Start-Process -Wait behavior
 function Cstpw_RunScript {
