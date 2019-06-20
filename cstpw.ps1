@@ -104,7 +104,7 @@ function Cstpw_CreateScript {
     elseif($cstpw_isBash){
         Cstpw_Do_CreateEmptyFile
         # bin bash...
-        Cstpw_Do_InitializeScript -FirstLine "#!/bin/bash"
+        Cstpw_Do_InitializeScript -CommandString "#!/bin/bash"
     }
 
 }
