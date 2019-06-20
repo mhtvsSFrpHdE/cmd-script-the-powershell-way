@@ -18,6 +18,9 @@ $cstpw_haveSysInfo = $false
 $cstpw_isWindows = $false
 
 
+
+# namespace Cstpw.Do
+
 # CreateEmptyFile add a new file to disk
 function Cstpw_Do_CreateEmptyFile {
     # Create a empty file
@@ -49,6 +52,9 @@ function Cstpw_Do_GrabSystemInfo {
         $Script:cstpw_haveSysInfo = $true
     }
 }
+
+
+# namespace Cstpw
 function Cstpw_CreateScript {
     param(
         [switch] $Bash = $false,
