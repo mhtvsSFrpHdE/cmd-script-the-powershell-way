@@ -57,19 +57,7 @@ function Cstpw_Do_GrabSystemInfo {
     }
 }
 
-
-# namespace Cstpw
-function Cstpw_CreateScript {
-    param(
-        [switch] $Bash = $false,
-        [switch] $Cmd = $false,
-        $Encoding = $cstpw_scriptEncoding
     )
-    # Do I have system information?
-    if (!$cstpw_haveSysInfo){
-        Cstpw_Do_GrabSystemInfo
-    }
-
     # Read script format from argument
     if ($Bash){
         $Script:cstpw_isBash = $true
@@ -97,20 +85,7 @@ function Cstpw_CreateScript {
         exit 1
     }
 
-    # Fill script template by format
-    if($cstpw_isCmd){
-        Cstpw_Do_CreateEmptyFile
-        # This meanless line to trigger a common type error
-        # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
-        #TODO I guess actually BOM is not necessary to handle Windows cmd script?
-        #Cstpw_Do_InitializeScript -CommandString "gUsJAzrtybEx >nul 2>nul"
-        #TODO Test `n work or not
-        Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0`nchcp 65001"
     }
-    elseif($cstpw_isBash){
-        Cstpw_Do_CreateEmptyFile
-        # bin bash...
-        Cstpw_Do_InitializeScript -CommandString "#!/bin/bash"
     }
 
 }
@@ -120,7 +95,6 @@ function Cstpw_WriteScript {
         $CommandString
     )
     
-    Cstpw_Do_AddCommand -CommandString $CommandString
 }
 # Run this script
 # The $Wait switch enable the Start-Process -Wait behavior
