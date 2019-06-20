@@ -145,9 +145,9 @@ function Cstpw_CreateScript {
     Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd
 
     if (!$cstpw_ubDetected){
+        Cstpw_Do_CreateEmptyFile
         # Fill script template by format
         if($cstpw_isCmd){
-            Cstpw_Do_CreateEmptyFile
             # This meanless line to trigger a common type error
             # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
             #TODO I guess actually BOM is not necessary to handle Windows cmd script?
@@ -157,7 +157,6 @@ function Cstpw_CreateScript {
             Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0"
         }
         elseif($cstpw_isBash){
-            Cstpw_Do_CreateEmptyFile
             # bin bash...
             Cstpw_Do_InitializeScript -CommandString "#!/bin/bash"
         }
