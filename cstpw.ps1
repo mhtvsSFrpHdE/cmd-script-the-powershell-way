@@ -13,13 +13,13 @@ $errMsg = "Err:"
 $errMsg_MoreThanOneSwitch = "$errMsg Do not specify more than one script format."
 
 # Create empty file
-function Cstpw_DoCreateEmptyFile {
+function Cstpw_Do_CreateEmptyFile {
     # Create a empty file
     New-Item -Path "$CSTPW_SCRIPT_FILE" -ItemType File -Force | Out-Null
 }
 
 # Initialize script
-function Cstpw_DoInitializeScript {
+function Cstpw_Do_InitializeScript {
     param (
         $CommandString
     )
@@ -28,7 +28,7 @@ function Cstpw_DoInitializeScript {
 }
 
 # Add command to script
-function Cstpw_DoAddCommand {
+function Cstpw_Do_AddCommand {
     param (
         $CommandString
     )
@@ -65,16 +65,16 @@ function Cstpw_CreateScript {
 
     # Create script by format
     if($cstpw_isCmd){
-        Cstpw_DoCreateEmptyFile
+        Cstpw_Do_CreateEmptyFile
         # This meanless line to trigger a common type error
         # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
         #TODO I guess actually BOM is not necessary to handle Windows cmd script?
-        #Cstpw_DoInitializeScript -FirstLine "gUsJAzrtybEx >nul 2>nul"
+        #Cstpw_Do_InitializeScript -FirstLine "gUsJAzrtybEx >nul 2>nul"
     }
     elseif($cstpw_isBash){
-        Cstpw_DoCreateEmptyFile
+        Cstpw_Do_CreateEmptyFile
         # bin bash...
-        Cstpw_DoInitializeScript -FirstLine "#!/bin/bash"
+        Cstpw_Do_InitializeScript -FirstLine "#!/bin/bash"
     }
 
 }
@@ -84,7 +84,7 @@ function Cstpw_WriteScript {
         $CommandString
     )
     
-    Cstpw_DoAddCommand -CommandString $CommandString
+    Cstpw_Do_AddCommand -CommandString $CommandString
 }
 # Run this script
 # The $Wait switch enable the Start-Process -Wait behavior
