@@ -61,8 +61,12 @@ function Cstpw_CreateScript {
         [switch] $Cmd = $false,
         $Encoding = $cstpw_scriptEncoding
     )
+    # Do I have system information?
+    if (!$cstpw_haveSysInfo){
+        Cstpw_Do_GrabSystemInfo
+    }
 
-    # Read argument
+    # Read script format from argument
     if ($Bash){
         $Script:cstpw_isBash = $true
         ++$Script:cstpw_switchCount
@@ -71,14 +75,22 @@ function Cstpw_CreateScript {
         $Script:cstpw_isCmd = $true
         ++$Script:cstpw_switchCount
     }
-
-    # Check argument error
+    # If no argument provided, try to match system
+    if ( !($Bash -or $Cmd) ){
+        if($cstpw_isWindows){
+            $Script:cstpw_isCmd = $true;
+            ++$Script:cstpw_switchCount
+        }
+    }
+    # If all auto match failed, fallback to default format(cmd)
+    if($cstpw_switchCount -eq 0){
+        $Script:cstpw_isCmd = $true;
+    }
+    # Check undocument behavior
     if ($cstpw_switchCount -gt 1){
         Write-Error $errMsg_MoreThanOneSwitch
+        Write-Error $errMsg_UndocumentBehavior
         exit 1
-    }
-    elseif($cstpw_switchCount -eq 0){
-        $Script:cstpw_isCmd = $true;
     }
 
     # Create script by format
