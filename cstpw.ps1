@@ -158,7 +158,7 @@ function Cstpw_CreateScript {
         }
         elseif($cstpw_isBash){
             # bin bash...
-            Cstpw_Do_InitializeScript -CommandString "#!/bin/bash"
+            Cstpw_Do_InitializeScript -CommandString "#!/bin/bash`ncd `"`$( dirname `"`$`{BASH_SOURCE`[0`]`}`" `)`""
         }
     }
     else{
