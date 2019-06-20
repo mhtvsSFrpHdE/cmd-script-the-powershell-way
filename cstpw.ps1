@@ -51,13 +51,25 @@ function Cstpw_Do_AddCommand {
 
 # Grab system information
 function Cstpw_Do_GrabSystemInfo {
-    if($Env:OS -eq "Windows_NT"){
+    if($Env:OS -eq $cstpw_envWindows){
         $Script:cstpw_isWindows = $true
+
+        # Now I have
+        $Script:cstpw_haveSysInfo = $true
+    }
+    else{
+        # Now I have
         $Script:cstpw_haveSysInfo = $true
     }
 }
 
+# Grab script information
+function Cstpw_Do_GrapScriptInfo {
+    param (
+        $Bash = $false,
+        $Cmd = $false
     )
+    
     # Read script format from argument
     if ($Bash){
         $Script:cstpw_isBash = $true
