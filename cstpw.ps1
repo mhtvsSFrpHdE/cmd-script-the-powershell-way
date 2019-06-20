@@ -5,17 +5,21 @@
 
 # Other default values
 $cstpw_scriptEncoding = "UTF8NoBOM"
+$cstpw_envWindows = "Windows_NT"
 # Error msg
 $errMsg = "Err:"
 $errMsg_MoreThanOneSwitch = "$errMsg Do not specify more than one script format."
 $errMsg_UndocumentBehavior = "$errMsg Undocument behavior."
+$errMsg_UnsupportPlatform = "$errMsg Can't run the type of script on this platform."
 
 # Global variables
 $cstpw_isCmd = $false
 $cstpw_isBash = $false
 $cstpw_switchCount = 0
 $cstpw_haveSysInfo = $false
+$cstpw_haveScriptInfo = $false
 $cstpw_isWindows = $false
+$cstpw_ubDetected = $false
 
 
 
