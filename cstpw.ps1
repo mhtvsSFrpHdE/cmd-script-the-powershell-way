@@ -4,13 +4,19 @@
 # $CSTPW_SCRIPT_FILE = "C:\demo.cmd"
 
 # Other default values
+$cstpw_scriptEncoding = "UTF8NoBOM"
+# Error msg
+$errMsg = "Err:"
+$errMsg_MoreThanOneSwitch = "$errMsg Do not specify more than one script format."
+$errMsg_UndocumentBehavior = "$errMsg Undocument behavior."
+
+# Global variables
 $cstpw_isCmd = $false
 $cstpw_isBash = $false
 $cstpw_switchCount = 0
-$cstpw_scriptEncoding = "UTF8NoBOM"
+$cstpw_haveSysInfo = $false
+$cstpw_isWindows = $false
 
-$errMsg = "Err:"
-$errMsg_MoreThanOneSwitch = "$errMsg Do not specify more than one script format."
 
 # Create empty file
 function Cstpw_Do_CreateEmptyFile {
