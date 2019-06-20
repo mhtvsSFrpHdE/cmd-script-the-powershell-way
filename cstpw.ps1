@@ -15,6 +15,7 @@ $errMsg_UnsupportPlatform = "$errMsg Can't run the type of script on this platfo
 # Global variables
 $cstpw_isCmd = $false
 $cstpw_isBash = $false
+$cstpw_isCustomTempate = $false
 $cstpw_switchCount = 0
 $cstpw_haveSysInfo = $false
 $cstpw_haveScriptInfo = $false
@@ -67,7 +68,8 @@ function Cstpw_Do_GrabSystemInfo {
 function Cstpw_Do_GrapScriptInfo {
     param (
         $Bash = $false,
-        $Cmd = $false
+        $Cmd = $false,
+        $CustomTemplate = $false
     )
     
     # Read script format from argument
@@ -79,8 +81,12 @@ function Cstpw_Do_GrapScriptInfo {
         $Script:cstpw_isCmd = $true
         ++$Script:cstpw_switchCount
     }
+    if ($CustomTemplate -ne $false){
+        $Script:cstpw_isCustomTempate = $CustomTemplate
+        ++$Script:cstpw_switchCount
+    }
     # If no argument provided, try to match system
-    if ( !($Bash -or $Cmd) ){
+    if ( !($Bash -or $Cmd -or ($CustomTemplate) -ne $true) ){
         if($cstpw_isWindows){
             $Script:cstpw_isCmd = $true;
             ++$Script:cstpw_switchCount
@@ -108,14 +114,15 @@ function Cstpw_Do_GrapScriptInfo {
 function Cstpw_Do_GrabAllInfo {
     param (
         $Bash = $false,
-        $Cmd = $false
+        $Cmd = $false,
+        $CustomTemplate = $false
     )
 
     if(!$cstpw_haveSysInfo){
         Cstpw_Do_GrabSystemInfo
     }
     if(!$cstpw_haveScriptInfo){
-        Cstpw_Do_GrapScriptInfo -Bash $Bash -Cmd $Cmd
+        Cstpw_Do_GrapScriptInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
     }
 
     if($cstpw_haveSysInfo -and $cstpw_haveScriptInfo){
@@ -135,6 +142,7 @@ function Cstpw_CreateScript {
     param(
         [switch] $Bash = $false,
         [switch] $Cmd = $false,
+        $CustomTemplate = $false,
         $Encoding = $cstpw_scriptEncoding
     )
 
@@ -142,12 +150,15 @@ function Cstpw_CreateScript {
     $Script:cstpw_scriptEncoding = $Encoding
 
     # Do I have sys and script info?
-    Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd
+    Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
 
     if (!$cstpw_ubDetected){
         Cstpw_Do_CreateEmptyFile
         # Fill script template by format
-        if($cstpw_isCmd){
+        if($cstpw_isCustomTempate){
+            Cstpw_Do_InitializeScript -CommandString $cstpw_isCustomTempate
+        }
+        elseif($cstpw_isCmd){
             # This meanless line to trigger a common type error
             # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
             #TODO I guess actually BOM is not necessary to handle Windows cmd script?
