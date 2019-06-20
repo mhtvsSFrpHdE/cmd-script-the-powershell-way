@@ -18,13 +18,13 @@ $cstpw_haveSysInfo = $false
 $cstpw_isWindows = $false
 
 
-# Create empty file
+# CreateEmptyFile add a new file to disk
 function Cstpw_Do_CreateEmptyFile {
     # Create a empty file
     New-Item -Path "$CSTPW_SCRIPT_FILE" -ItemType File -Force | Out-Null
 }
 
-# Initialize script
+# InitializeScript fill the file with script template
 function Cstpw_Do_InitializeScript {
     param (
         $CommandString
@@ -33,7 +33,7 @@ function Cstpw_Do_InitializeScript {
     $CommandString | Out-File -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding
 }
 
-# Add command to script
+# AddCommand add new command to script line by line
 function Cstpw_Do_AddCommand {
     param (
         $CommandString
