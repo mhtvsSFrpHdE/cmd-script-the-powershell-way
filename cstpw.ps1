@@ -92,11 +92,17 @@ function Cstpw_Do_GrapScriptInfo {
     }
     # Check undocument behavior
     if ($cstpw_switchCount -gt 1){
+        $Script:cstpw_ubDetected = $true
+
         Write-Error $errMsg_MoreThanOneSwitch
         Write-Error $errMsg_UndocumentBehavior
-        exit 1
+        
+        return
     }
 
+    # Now I have
+    $Script:cstpw_haveScriptInfo = $true
+}
     }
     }
 
