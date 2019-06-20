@@ -124,6 +124,43 @@ function Cstpw_Do_GrabAllInfo {
     }
 }
 
+
+# namespace Cstpw
+function Cstpw_CreateScript {
+    param(
+        [switch] $Bash = $false,
+        [switch] $Cmd = $false,
+        $Encoding = $cstpw_scriptEncoding
+    )
+
+    # Argument fallback, if user specidifed value
+    $Script:cstpw_scriptEncoding = $Encoding
+
+    # Do I have sys and script info?
+    Cstpw_Do_GrabAllInfo
+
+    if (!$cstpw_ubDetected){
+        # Fill script template by format
+        if($cstpw_isCmd){
+            Cstpw_Do_CreateEmptyFile
+            # This meanless line to trigger a common type error
+            # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
+            #TODO I guess actually BOM is not necessary to handle Windows cmd script?
+            #Cstpw_Do_InitializeScript -CommandString "gUsJAzrtybEx >nul 2>nul"
+            #TODO Test `n work or not
+            Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0`nchcp 65001"
+        }
+        elseif($cstpw_isBash){
+            Cstpw_Do_CreateEmptyFile
+            # bin bash...
+            Cstpw_Do_InitializeScript -CommandString "#!/bin/bash"
+        }
+    }
+    else{
+        Write-Error $errMsg_UndocumentBehavior
+
+        return
+    }
 }
 # Append content to the UTF-8 script
 function Cstpw_WriteScript {
