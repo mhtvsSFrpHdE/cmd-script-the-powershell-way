@@ -103,8 +103,26 @@ function Cstpw_Do_GrapScriptInfo {
     # Now I have
     $Script:cstpw_haveScriptInfo = $true
 }
+
+# Double grab with check
+function Cstpw_Do_GrabAllInfo {
+    if(!$cstpw_haveSysInfo){
+        Cstpw_Do_GrabSystemInfo
     }
+    if(!$cstpw_haveScriptInfo){
+        Cstpw_Do_GrapScriptInfo
     }
+
+    if($cstpw_haveSysInfo -and $cstpw_haveScriptInfo){
+        return
+    }
+    else{
+        $Script:cstpw_ubDetected = $true;
+        Write-Error $errMsg_UndocumentBehavior
+
+        return
+    }
+}
 
 }
 # Append content to the UTF-8 script
