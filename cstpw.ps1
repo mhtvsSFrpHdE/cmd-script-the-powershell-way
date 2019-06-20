@@ -152,8 +152,9 @@ function Cstpw_CreateScript {
             # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
             #TODO I guess actually BOM is not necessary to handle Windows cmd script?
             #Cstpw_Do_InitializeScript -CommandString "gUsJAzrtybEx >nul 2>nul"
-            #TODO Test `n work or not
-            Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0`nchcp 65001"
+
+            # You can use `n to divide a string into multiple line as template
+            Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0"
         }
         elseif($cstpw_isBash){
             Cstpw_Do_CreateEmptyFile
