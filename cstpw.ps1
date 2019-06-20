@@ -42,7 +42,13 @@ function Cstpw_Do_AddCommand {
     $CommandString | Add-Content -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding = $cstpw_scriptEncoding
 }
 
-# Create a empty cmd script file by using argument
+# Grab system information
+function Cstpw_Do_GrabSystemInfo {
+    if($Env:OS -eq "Windows_NT"){
+        $Script:cstpw_isWindows = $true
+        $Script:cstpw_haveSysInfo = $true
+    }
+}
 function Cstpw_CreateScript {
     param(
         [switch] $Bash = $false,
