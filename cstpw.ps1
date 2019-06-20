@@ -184,11 +184,27 @@ function Cstpw_RunScript {
     param (
         [switch] $Wait
     )
+
+    # Do I have sys and script info?
+    Cstpw_Do_GrabAllInfo
     
-    if ($Wait){
-        Start-Process -FilePath "$CSTPW_SCRIPT_FILE" -Wait
+    if(!$cstpw_ubDetected){
+        # On Windows system, run cmd script
+        if($cstpw_isWindows -and $cstpw_isCmd){
+            if ($Wait){
+                Start-Process -FilePath "$CSTPW_SCRIPT_FILE" -Wait
+            }
+            else {
+                Start-Process -FilePath "$CSTPW_SCRIPT_FILE"
+            }
+        }
+        else{
+            Write-Host $errMsg_UnsupportPlatform
+        }
     }
-    else {
-        Start-Process -FilePath "$CSTPW_SCRIPT_FILE"
+    else{
+        Write-Error $errMsg_UndocumentBehavior
+
+        return
     }
 }
