@@ -101,10 +101,8 @@ function Cstpw_Do_GrapScriptInfo {
     if ($cstpw_switchCount -gt 1){
         $script:cstpw_ubDetected = $true
 
-        Write-Error $cstpw_errMsg_MoreThanOneSwitch
         Write-Error $cstpw_errMsg_UndocumentBehavior
-        
-        return
+        throw $cstpw_errMsg_MoreThanOneSwitch
     }
 
     # Now I have
@@ -131,9 +129,7 @@ function Cstpw_Do_GrabAllInfo {
     }
     else{
         $script:cstpw_ubDetected = $true;
-        Write-Error $cstpw_errMsg_UndocumentBehavior
-
-        return
+        throw $cstpw_errMsg_UndocumentBehavior
     }
 }
 
@@ -173,10 +169,8 @@ function Cstpw_CreateScript {
             Cstpw_Do_InitializeScript -CommandString "#!/bin/bash`ncd `"`$( dirname `"`$`{BASH_SOURCE`[0`]`}`" `)`""
         }
     }
-    else{
-        Write-Error $cstpw_errMsg_UndocumentBehavior
-
-        return
+    else {
+        throw $cstpw_errMsg_UndocumentBehavior
     }
 }
 # Append content to the UTF-8 script
@@ -188,10 +182,8 @@ function Cstpw_WriteScript {
     if (!$cstpw_ubDetected){
         Cstpw_Do_AddCommand -CommandString $CommandString
     }
-    else{
-        Write-Error $cstpw_errMsg_UndocumentBehavior
-
-        return
+    else {
+        throw $cstpw_errMsg_UndocumentBehavior
     }
 }
 
@@ -215,13 +207,11 @@ function Cstpw_RunScript {
                 Start-Process -FilePath "$CSTPW_SCRIPT_FILE"
             }
         }
-        else{
-            Write-Host $cstpw_errMsg_UnsupportPlatform
+        else {
+            throw $cstpw_errMsg_UnsupportPlatform
         }
     }
-    else{
-        Write-Error $cstpw_errMsg_UndocumentBehavior
-
-        return
+    else {
+        throw $cstpw_errMsg_UndocumentBehavior
     }
 }
