@@ -216,7 +216,7 @@ function Cstpw_RunScript {
             }
         }
         else{
-            Write-Host cstpw_
+            Write-Host $cstpw_errMsg_UnsupportPlatform
         }
     }
     else{
