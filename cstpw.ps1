@@ -53,14 +53,14 @@ function Cstpw_Do_AddCommand {
 # Grab system information
 function Cstpw_Do_GrabSystemInfo {
     if($Env:OS -eq $cstpw_envWindows){
-        $Script:cstpw_isWindows = $true
+        $script:cstpw_isWindows = $true
 
         # Now I have
-        $Script:cstpw_haveSysInfo = $true
+        $script:cstpw_haveSysInfo = $true
     }
     else{
         # Now I have
-        $Script:cstpw_haveSysInfo = $true
+        $script:cstpw_haveSysInfo = $true
     }
 }
 
@@ -74,31 +74,32 @@ function Cstpw_Do_GrapScriptInfo {
     
     # Read script format from argument
     if ($Bash){
-        $Script:cstpw_isBash = $true
-        ++$Script:cstpw_switchCount
+        $script:cstpw_isBash = $true
+        ++$script:cstpw_switchCount
     }
     if ($Cmd){
-        $Script:cstpw_isCmd = $true
-        ++$Script:cstpw_switchCount
+        $script:cstpw_isCmd = $true
+        ++$script:cstpw_switchCount
     }
     if ($CustomTemplate -ne $false){
-        $Script:cstpw_isCustomTempate = $CustomTemplate
-        ++$Script:cstpw_switchCount
+        $script:cstpw_isCustomTempate = $CustomTemplate
+        ++$script:cstpw_switchCount
     }
     # If no argument provided, try to match system
-    if ( !($Bash -or $Cmd -or ($CustomTemplate) -ne $true) ){
+    # (All the three is false)
+    if ( ($Bash -or $Cmd -or ($CustomTemplate -ne $false) ) -ne $true ){
         if($cstpw_isWindows){
-            $Script:cstpw_isCmd = $true;
-            ++$Script:cstpw_switchCount
+            $script:cstpw_isCmd = $true;
+            ++$script:cstpw_switchCount
         }
     }
     # If all auto match failed, fallback to default format(cmd)
     if($cstpw_switchCount -eq 0){
-        $Script:cstpw_isCmd = $true;
+        $script:cstpw_isCmd = $true;
     }
     # Check undocument behavior
     if ($cstpw_switchCount -gt 1){
-        $Script:cstpw_ubDetected = $true
+        $script:cstpw_ubDetected = $true
 
         Write-Error $cstpw_errMsg_MoreThanOneSwitch
         Write-Error $cstpw_errMsg_UndocumentBehavior
@@ -107,7 +108,7 @@ function Cstpw_Do_GrapScriptInfo {
     }
 
     # Now I have
-    $Script:cstpw_haveScriptInfo = $true
+    $script:cstpw_haveScriptInfo = $true
 }
 
 # Double grab with check
@@ -129,7 +130,7 @@ function Cstpw_Do_GrabAllInfo {
         return
     }
     else{
-        $Script:cstpw_ubDetected = $true;
+        $script:cstpw_ubDetected = $true;
         Write-Error $cstpw_errMsg_UndocumentBehavior
 
         return
@@ -147,7 +148,7 @@ function Cstpw_CreateScript {
     )
 
     # Argument fallback, if user specidifed value
-    $Script:cstpw_scriptEncoding = $Encoding
+    $script:cstpw_scriptEncoding = $Encoding
 
     # Do I have sys and script info?
     Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
