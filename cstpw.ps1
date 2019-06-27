@@ -52,13 +52,13 @@ function Cstpw_Do_AddCommand {
 
 # Grab system information
 function Cstpw_Do_GrabSystemInfo {
-    if($Env:OS -eq $cstpw_envWindows){
+    if ($Env:OS -eq $cstpw_envWindows) {
         $script:cstpw_isWindows = $true
 
         # Now I have
         $script:cstpw_haveSysInfo = $true
     }
-    else{
+    else {
         # Now I have
         $script:cstpw_haveSysInfo = $true
     }
@@ -73,32 +73,32 @@ function Cstpw_Do_GrapScriptInfo {
     )
     
     # Read script format from argument
-    if ($Bash){
+    if ($Bash) {
         $script:cstpw_isBash = $true
         ++$script:cstpw_switchCount
     }
-    if ($Cmd){
+    if ($Cmd) {
         $script:cstpw_isCmd = $true
         ++$script:cstpw_switchCount
     }
-    if ($CustomTemplate -ne $false){
+    if ($CustomTemplate -ne $false) {
         $script:cstpw_isCustomTempate = $CustomTemplate
         ++$script:cstpw_switchCount
     }
     # If no argument provided, try to match system
     # (All the three is false)
-    if ( ($Bash -or $Cmd -or ($CustomTemplate -ne $false) ) -ne $true ){
-        if($cstpw_isWindows){
+    if ( ($Bash -or $Cmd -or ($CustomTemplate -ne $false) ) -ne $true ) {
+        if ($cstpw_isWindows) {
             $script:cstpw_isCmd = $true;
             ++$script:cstpw_switchCount
         }
     }
     # If all auto match failed, fallback to default format(cmd)
-    if($cstpw_switchCount -eq 0){
+    if ($cstpw_switchCount -eq 0) {
         $script:cstpw_isCmd = $true;
     }
     # Check undocument behavior
-    if ($cstpw_switchCount -gt 1){
+    if ($cstpw_switchCount -gt 1) {
         $script:cstpw_ubDetected = $true
 
         Write-Error $cstpw_errMsg_UndocumentBehavior
@@ -117,10 +117,10 @@ function Cstpw_Do_GrabAllInfo {
         $CustomTemplate = $false
     )
 
-    if(!$cstpw_haveSysInfo){
+    if (!$cstpw_haveSysInfo) {
         Cstpw_Do_GrabSystemInfo
     }
-    if(!$cstpw_haveScriptInfo){
+    if (!$cstpw_haveScriptInfo) {
         Cstpw_Do_GrapScriptInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
     }
 
@@ -149,13 +149,13 @@ function Cstpw_CreateScript {
     # Do I have sys and script info?
     Cstpw_Do_GrabAllInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
 
-    if (!$cstpw_ubDetected){
+    if (!$cstpw_ubDetected) {
         Cstpw_Do_CreateEmptyFile
         # Fill script template by format
-        if($cstpw_isCustomTempate){
+        if ($cstpw_isCustomTempate) {
             Cstpw_Do_InitializeScript -CommandString $cstpw_isCustomTempate
         }
-        elseif($cstpw_isCmd){
+        elseif ($cstpw_isCmd) {
             # This meanless line to trigger a common type error
             # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
             #TODO I guess actually BOM is not necessary to handle Windows cmd script?
@@ -164,7 +164,7 @@ function Cstpw_CreateScript {
             # You can use `n to divide a string into multiple line as template
             Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0"
         }
-        elseif($cstpw_isBash){
+        elseif ($cstpw_isBash) {
             # bin bash...
             Cstpw_Do_InitializeScript -CommandString "#!/bin/bash`ncd `"`$( dirname `"`$`{BASH_SOURCE`[0`]`}`" `)`""
         }
@@ -179,7 +179,7 @@ function Cstpw_WriteScript {
         $CommandString
     )
     
-    if (!$cstpw_ubDetected){
+    if (!$cstpw_ubDetected) {
         Cstpw_Do_AddCommand -CommandString $CommandString
     }
     else {
@@ -197,10 +197,10 @@ function Cstpw_RunScript {
     # Do I have sys and script info?
     Cstpw_Do_GrabAllInfo
     
-    if(!$cstpw_ubDetected){
+    if (!$cstpw_ubDetected) {
         # On Windows system, run cmd script
-        if($cstpw_isWindows -and $cstpw_isCmd){
-            if ($Wait){
+        if ($cstpw_isWindows -and $cstpw_isCmd) {
+            if ($Wait) {
                 Start-Process -FilePath "$CSTPW_SCRIPT_FILE" -Wait
             }
             else {
