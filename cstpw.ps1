@@ -7,10 +7,10 @@
 $cstpw_scriptEncoding = "UTF8NoBOM"
 $cstpw_envWindows = "Windows_NT"
 # Error msg
-$errMsg = "Err:"
-$errMsg_MoreThanOneSwitch = "$errMsg Do not specify more than one script format."
-$errMsg_UndocumentBehavior = "$errMsg Undocument behavior."
-$errMsg_UnsupportPlatform = "$errMsg Can't run the type of script on this platform."
+$cstpw_errMsg = "Err:"
+$cstpw_errMsg_MoreThanOneSwitch = "$cstpw_errMsg Do not specify more than one script format."
+$cstpw_errMsg_UndocumentBehavior = "$cstpw_errMsg Undocument behavior."
+$cstpw_errMsg_UnsupportPlatform = "$cstpw_errMsg Can't run the type of script on this platform."
 
 # Global variables
 $cstpw_isCmd = $false
@@ -100,8 +100,8 @@ function Cstpw_Do_GrapScriptInfo {
     if ($cstpw_switchCount -gt 1){
         $Script:cstpw_ubDetected = $true
 
-        Write-Error $errMsg_MoreThanOneSwitch
-        Write-Error $errMsg_UndocumentBehavior
+        Write-Error $cstpw_errMsg_MoreThanOneSwitch
+        Write-Error $cstpw_errMsg_UndocumentBehavior
         
         return
     }
@@ -130,7 +130,7 @@ function Cstpw_Do_GrabAllInfo {
     }
     else{
         $Script:cstpw_ubDetected = $true;
-        Write-Error $errMsg_UndocumentBehavior
+        Write-Error $cstpw_errMsg_UndocumentBehavior
 
         return
     }
@@ -173,7 +173,7 @@ function Cstpw_CreateScript {
         }
     }
     else{
-        Write-Error $errMsg_UndocumentBehavior
+        Write-Error $cstpw_errMsg_UndocumentBehavior
 
         return
     }
@@ -188,7 +188,7 @@ function Cstpw_WriteScript {
         Cstpw_Do_AddCommand -CommandString $CommandString
     }
     else{
-        Write-Error $errMsg_UndocumentBehavior
+        Write-Error $cstpw_errMsg_UndocumentBehavior
 
         return
     }
@@ -215,11 +215,11 @@ function Cstpw_RunScript {
             }
         }
         else{
-            Write-Host $errMsg_UnsupportPlatform
+            Write-Host cstpw_
         }
     }
     else{
-        Write-Error $errMsg_UndocumentBehavior
+        Write-Error $cstpw_errMsg_UndocumentBehavior
 
         return
     }
