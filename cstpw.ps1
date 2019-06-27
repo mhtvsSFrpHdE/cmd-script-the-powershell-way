@@ -124,10 +124,8 @@ function Cstpw_Do_GrabAllInfo {
         Cstpw_Do_GrapScriptInfo -Bash $Bash -Cmd $Cmd -CustomTemplate $CustomTemplate
     }
 
-    if($cstpw_haveSysInfo -and $cstpw_haveScriptInfo){
-        return
-    }
-    else{
+    # Error check
+    if ( !($cstpw_haveSysInfo -and $cstpw_haveScriptInfo) ) {
         $script:cstpw_ubDetected = $true;
         throw $cstpw_errMsg_UndocumentBehavior
     }
