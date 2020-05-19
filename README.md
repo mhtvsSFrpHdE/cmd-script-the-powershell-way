@@ -1,3 +1,7 @@
+# Deprecated
+The python equivalent will available soon,  
+I may not use PowerShell to do things any more.
+
 # cmd-script-the-powershell-way
 **Contact**  
 See https://github.com/mhtvsSFrpHdE/contact-me  
