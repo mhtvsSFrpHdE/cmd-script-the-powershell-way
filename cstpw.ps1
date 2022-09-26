@@ -2,9 +2,17 @@
 # Either full path or relative path should work
 # But put the variable out side the script, and change variable name if needed.
 # $CSTPW_SCRIPT_FILE = "C:\demo.cmd"
+# $global:CSTPW_SCRIPT_FILE = "C:\demo.cmd"
+
+# Confirm powershell version
+$cstpw_powershellVersion = (Get-Host).Version.Build
+$cstpw_isPs6 = $cstpw_powershellVersion -GT 5
 
 # Other default values
-$cstpw_scriptEncoding = "UTF8NoBOM"
+$cstpw_scriptEncoding = "utf8"
+If ($cstpw_isPs6) {
+    $cstpw_scriptEncoding = "UTF8NoBom"
+}
 $cstpw_envWindows = "Windows_NT"
 # Error msg
 $cstpw_errMsg = "Err:"
@@ -37,7 +45,7 @@ function Cstpw_Do_InitializeScript {
     param (
         $CommandString
     )
-    
+
     $CommandString | Out-File -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding
 }
 
@@ -46,7 +54,7 @@ function Cstpw_Do_AddCommand {
     param (
         $CommandString
     )
-    
+
     $CommandString | Add-Content -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding
 }
 
@@ -71,7 +79,7 @@ function Cstpw_Do_GrapScriptInfo {
         $Cmd = $false,
         $CustomTemplate = $false
     )
-    
+
     # Read script format from argument
     if ($Bash) {
         $script:cstpw_isBash = $true
@@ -154,13 +162,19 @@ function Cstpw_CreateScript {
             Cstpw_Do_InitializeScript -CommandString $cstpw_isCustomTempate
         }
         elseif ($cstpw_isCmd) {
+            # You can use `n to divide a string into multiple line as template
+
             # This meanless line to trigger a common type error
             # But it can let cmd.exe ignore the unsupported UTF-8 "BOM"
-            #TODO I guess actually BOM is not necessary to handle Windows cmd script?
-            #Cstpw_Do_InitializeScript -CommandString "gUsJAzrtybEx >nul 2>nul"
-
-            # You can use `n to divide a string into multiple line as template
-            Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0"
+            If ($cstpw_isPs6) {
+                # Anti BOM statement is not necessary on powershell 6
+                Cstpw_Do_InitializeScript -CommandString "cd /d %~dp0"
+            }
+            else {
+                # Anti BOM statement
+                Cstpw_Do_InitializeScript -CommandString "gUsJAzrtybEx >nul 2>nul"
+                Cstpw_Do_AddCommand -CommandString "cd /d %~dp0"
+            }
         }
         elseif ($cstpw_isBash) {
             # bin bash...
@@ -176,7 +190,7 @@ function Cstpw_WriteScript {
     param (
         $CommandString
     )
-    
+
     if (!$cstpw_ubDetected) {
         Cstpw_Do_AddCommand -CommandString $CommandString
     }
@@ -194,7 +208,7 @@ function Cstpw_RunScript {
 
     # Do I have sys and script info?
     Cstpw_Do_GrabAllInfo
-    
+
     if (!$cstpw_ubDetected) {
         # On Windows system, run cmd script
         if ($cstpw_isWindows -and $cstpw_isCmd) {
