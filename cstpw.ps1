@@ -55,7 +55,7 @@ function Cstpw_Do_AddCommand {
         $CommandString
     )
 
-    $CommandString | Add-Content -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding
+    $CommandString | Out-File -LiteralPath "$CSTPW_SCRIPT_FILE" -Encoding $cstpw_scriptEncoding -Append
 }
 
 # Grab system information
