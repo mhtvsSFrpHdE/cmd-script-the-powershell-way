@@ -5,7 +5,7 @@
 # $global:CSTPW_SCRIPT_FILE = "C:\demo.cmd"
 
 # Confirm powershell version
-$cstpw_powershellVersion = (Get-Host).Version.Build
+$cstpw_powershellVersion = $PSVersionTable.PSVersion.Major
 $cstpw_isPs6 = $cstpw_powershellVersion -GT 5
 
 # Other default values
